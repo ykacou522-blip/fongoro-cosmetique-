@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fongoro Cosmétique</title>
+
+<style>
+:root{
+--primary:#111827;
+--gold:#fbbf24;
+--success:#16a34a;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:#f3f4f6;
+}
+
+header{
+background:var(--primary);
+padding:15px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:999;
+}
+
+.logo{
+color:var(--gold);
+font-size:26px;
+font-weight:bold;
+}
+
+nav a{
+color:white;
+margin-left:15px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.hero{
+height:80vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
+url("https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9");
+background-size:cover;
+background-position:center;
+}
+
+.hero h1{
+font-size:4rem;
+}
+
+section{
+padding:50px 8%;
+}
+
+h2{
+margin-bottom:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.card img{
+width:100%;
+height:250px;
+object-fit:cover;
+}
+
+.card-content{
+padding:15px;
+}
+
+.price{
+font-size:22px;
+font-weight:bold;
+color:green;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+background:var(--primary);
+color:white;
+cursor:pointer;
+margin-top:10px;
+border-radius:8px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-bottom:10px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+#adminPanel{
+display:none;
+background:white;
+padding:20px;
+border-radius:10px;
+}
+
+.stock{
+color:var(--success);
+font-weight:bold;
+}
+
+.panier, .paiement{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+.contact{
+background:var(--primary);
+color:white;
+text-align:center;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:#25d366;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:28px;
+text-decoration:none;
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+FONGORO COSMÉTIQUE
+</div>
+
+<nav>
+<a href="#accueil">Accueil</a>
+<a href="#produits">Produits</a>
+<a href="#stock">Stock</a>
+<a href="#panier">Panier</a>
+<a href="#contact">Contact</a>
+<a href="#" onclick="loginAdmin()">Admin</a>
+</nav>
+
+</header>
+
+<section class="hero" id="accueil">
+
+<div>
+<h1>FONGORO COSMÉTIQUE</h1>
+<p>Votre référence beauté à Adjamé</p>
+</div>
+
+</section>
+
+<section id="produits">
+
+<h2>Produits / Services</h2>
+
+<div id="products" class="grid"></div>
+
+</section>
+
+<section id="stock">
+
+<h2>Produits en Stock</h2>
+
+<div id="stockList"></div>
+
+</section>
+
+<section id="panier">
+
+<h2>Panier</h2>
+
+<div class="panier">
+
+<ul id="cartItems"></ul>
+
+<h3>Total :
+<span id="total">0</span> FCFA
+</h3>
+
+<button onclick="commanderWhatsapp()">
+Commander sur WhatsApp
+</button>
+
+</div>
+
+<div class="paiement">
+
+<h2>Paiement Mobile Money</h2>
+
+<p id="orangeNumber">
+Orange Money : Non défini
+</p>
+
+<p id="mtnNumber">
+MTN Money : Non défini
+</p>
+
+<p id="moovNumber">
+Moov Money : Non défini
+</p>
+
+</div>
+
+</section>
+
+<section>
+
+<div id="adminPanel">
+
+<h2>Administration</h2>
+
+<input id="productName" placeholder="Nom produit">
+
+<input id="productPrice" placeholder="Prix">
+
+<input id="productStock" placeholder="Stock">
+
+<input type="file" id="productImage">
+
+<button onclick="addProduct()">
+Ajouter le produit
+</button>
+
+<hr><br>
+
+<h2>Configurer Mobile Money</h2>
+
+<input id="orangeInput"
+placeholder="Orange Money">
+
+<input id="mtnInput"
+placeholder="MTN Money">
+
+<input id="moovInput"
+placeholder="Moov Money">
+
+<button onclick="savePayments()">
+Enregistrer
+</button>
+
+</div>
+
+</section>
+
+<section class="contact" id="contact">
+
+<h2>Contact</h2>
+
+<p>📍 Adjamé vers le marché Gouro</p>
+
+<p>📞 0152171152</p>
+
+<p>📧 Fongoroamadou07@gmail.com</p>
+
+<p>💬 WhatsApp : 0152171152</p>
+
+</section>
+
+<a
+class="whatsapp"
+target="_blank"
+href="https://wa.me/2250152171152">
+💬
+</a>
+
+<script>
+
+let produits =
+JSON.parse(localStorage.getItem("fongoro_products")) || [];
+
+let cart = [];
+
+let paiements =
+JSON.parse(localStorage.getItem("fongoro_paiements")) || {};
+
+function loginAdmin(){
+
+let mdp =
+prompt("Mot de passe admin");
+
+if(mdp === "incursio2022"){
+
+document.getElementById("adminPanel")
+.style.display="block";
+
+}else{
+
+alert("Accès refusé");
+
+}
+
+}
+
+function addProduct(){
+
+let name =
+document.getElementById("productName").value;
+
+let price =
+document.getElementById("productPrice").value;
+
+let stock =
+document.getElementById("productStock").value;
+
+let image =
+document.getElementById("productImage")
+.files[0];
+
+if(!image){
+alert("Choisissez une image");
+return;
+}
+
+const reader =
+new FileReader();
+
+reader.onload = function(e){
+
+produits.push({
+
+name:name,
+price:price,
+stock:stock,
+image:e.target.result
+
+});
+
+localStorage.setItem(
+"fongoro_products",
+JSON.stringify(produits)
+);
+
+renderProducts();
+
+};
+
+reader.readAsDataURL(image);
+
+}
+
+function renderProducts(){
+
+let html="";
+let stockHtml="";
+
+produits.forEach((p,index)=>{
+
+html += `
+<div class="card">
+
+<img src="${p.image}">
+
+<div class="card-content">
+
+<h3>${p.name}</h3>
+
+<p class="price">
+${p.price} FCFA
+</p>
+
+<p class="stock">
+Stock : ${p.stock}
+</p>
+
+<button onclick="addToCart(${index})">
+Ajouter au panier
+</button>
+
+</div>
+
+</div>
+`;
+
+stockHtml += `
+<p>
+✅ ${p.name}
+(${p.stock} disponibles)
+</p>
+`;
+
+});
+
+document.getElementById("products")
+.innerHTML = html;
+
+document.getElementById("stockList")
+.innerHTML = stockHtml;
+
+}
+
+function addToCart(index){
+
+cart.push(produits[index]);
+
+updateCart();
+
+}
+
+function updateCart(){
+
+let html="";
+
+let total=0;
+
+cart.forEach(item=>{
+
+html += `
+<li>
+${item.name}
+-
+${item.price} FCFA
+</li>
+`;
+
+total += Number(item.price);
+
+});
+
+document.getElementById("cartItems")
+.innerHTML=html;
+
+document.getElementById("total")
+.innerHTML=total;
+
+}
+
+function commanderWhatsapp(){
+
+let total =
+document.getElementById("total")
+.innerText;
+
+let message =
+"Bonjour Fongoro Cosmétique,%0AJe souhaite commander des produits.%0ATotal : "
++ total +
+" FCFA";
+
+window.open(
+"https://wa.me/2252250152171152?text="
++ message
+);
+
+}
+
+function savePayments(){
+
+paiements.orange =
+document.getElementById("orangeInput").value;
+
+paiements.mtn =
+document.getElementById("mtnInput").value;
+
+paiements.moov =
+document.getElementById("moovInput").value;
+
+localStorage.setItem(
+"fongoro_paiements",
+JSON.stringify(paiements)
+);
+
+loadPayments();
+
+}
+
+function loadPayments(){
+
+document.getElementById("orangeNumber")
+.innerHTML =
+"Orange Money : " +
+(paiements.orange || "Non défini");
+
+document.getElementById("mtnNumber")
+.innerHTML =
+"MTN Money : " +
+(paiements.mtn || "Non défini");
+
+document.getElementById("moovNumber")
+.innerHTML =
+"Moov Money : " +
+(paiements.moov || "Non défini");
+
+}
+
+renderProducts();
+loadPayments();
+
+</script>
+
+</body>
+</html>
